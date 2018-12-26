@@ -1,0 +1,28 @@
+<% include ../partials/header %>
+
+<div class="container"  >
+	<header style="text-align: center;">
+	    <h2>Sharing a new trip!</h2>
+	</header>
+	<form style="width:30%; margin: 0 auto;" action="/experiences" method="post">
+	    <div class="form-group">
+	        <input type="text" class="form-control" placeholder="Title" name="experience_title">
+	    </div>
+	    <div class="form-group">
+	        <input type="text" class="form-control" placeholder="Image" name="image">
+	    </div>
+	    <div class="form-group">
+	    	<label for="img">Select Image:</label>
+	        <input id="img" type="file" accept=".jpg, .jpeg, .png">
+	    </div>
+
+	    <div class="form-group">
+	    	<textarea rows="10" class="form-control" name="description" placeholder="Description"></textarea>    
+	    </div>
+
+	    <button type="submit" class="btn btn-primary form-control">Submit</button>
+	    <a href="/experiences">go back</a>
+	</form>
+
+</div>
+<% include ../partials/footer %>

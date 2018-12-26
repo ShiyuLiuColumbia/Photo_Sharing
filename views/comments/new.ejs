@@ -1,0 +1,18 @@
+<% include ../partials/header %>
+
+
+<div class="container"  >
+	<header style="text-align: center;">
+	    <h2>Write comment for <%= experience.experience_title %></h2>
+	</header>
+	<form style="width:30%; margin: 0 auto;" action="/experiences/<%= experience._id %>/comments" method="post">
+	    <div class="form-group">
+	    	<textarea rows="10" class="form-control" name="comment[text]" placeholder="Content"></textarea>    
+	    </div>
+
+	    <button type="submit" class="btn btn-primary form-control">Submit</button>
+	    <a href="/experiences/<%= experience._id %>">go back</a>
+	</form>
+	</div>
+
+<% include ../partials/footer %>

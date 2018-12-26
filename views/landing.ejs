@@ -1,0 +1,40 @@
+
+	<!DOCTYPE html>
+	<html>
+	    <head>
+	        <title>Trip Sharing</title>
+	        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+	        <link rel="stylesheet" href="/stylesheets/landing.css">
+	        <script src="https://cdnjs.cloudflare.com/ajax/libs/modernizr/2.8.3/modernizr.min.js" type="text/javascript" async></script>
+	    </head>
+	    <body>
+	    
+	    <div class="container">
+	        <% if(error && error.length > 0){ %>
+	            <div class="alert alert-danger" role="alert">
+	                <%= error %>
+	            </div>
+	        <% } %>
+	        <% if(success && success.length > 0){ %>
+	            <div class="alert alert-success" role="alert">
+	                <%= success %>
+	            </div>
+	        <% } %>
+	    </div>
+	    
+	    <div id="landing-header">
+	 		<h1>欢迎来到诗雨和子靖的旅游小屋</h1>
+			<a href="/experiences" class="btn btn-outline-info"><strong>View All Trips</strong></a>
+	    </div>
+	    
+	    <ul class="slideshow">
+	      <li></li>
+	      <li></li>
+	      <li></li>
+	      <li></li>
+	      <li></li>
+	    </ul>
+<!-- notice: we can not use '/partials/header', since the slash will turn us to the root directory of views. So if we use slash, it will look like this '/Users/shiyuliu/Desktop/Trip_Sharing/views/partials/footer'-->
+<% include partials/footer %>
+
+

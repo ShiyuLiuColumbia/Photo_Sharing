@@ -1,0 +1,63 @@
+ <% include ../partials/header %>
+
+<div class="container">
+	<div class="row">
+		<div class="col-md-3">
+			<p class="lead">Trip Sharing</p>
+			<div class="list-group">
+				<li class="list-group-item active" >Info 1</li>
+				<li class="list-group-item" >Info 2</li>
+				<li class="list-group-item" >Info 3</li>
+			</div>
+		</div>
+		<div class="col-md-9">
+			<div class="img-thumbnail">
+				<img src="<%= foundExperience.image %>">
+				<div class="caption-full">
+					<h4 class="float-right">$100</h4>
+					<h4 style="font-family: 'ZCOOL KuaiLe', cursive;"><a href=""><%= foundExperience.experience_title %></a></h4>
+					<p style="font-family: 'ZCOOL KuaiLe', cursive;"><%= foundExperience.description  %></p>
+					<p><em>Submitted By <%= foundExperience.author.username %></em></p>
+					<% if(currentUser&&foundExperience.author.id.equals(currentUser._id)){ %>
+						<a class="btn btn-sm btn-warning" href="/experiences/<%= foundExperience._id %>/edit">Edit</a>
+						<form action="/experiences/<%= foundExperience._id %>?_method=DELETE" method="POST" style="display: inline; ">
+							<button class="btn btn-sm btn-danger">Delete</button>
+						</form>
+					<% } %>
+
+				</div>
+			</div>
+			<div class="card mt-5" style="background: RGB(242, 243, 244)">
+				<div class="card-body">
+					<div class="text-right">
+						<a class=" btn btn-success" href="/experiences/<%= foundExperience._id %>/comments/new">Add New Comment</a>
+					</div>
+					<hr>
+					<% foundExperience.comments.forEach(function(comment){ %>
+						<div class="row">
+							<div class="col-md-12">
+								<strong><%= comment.author.username %> </strong>
+								<span class="float-right">10 days ago</span>
+								<p >
+									<%= comment.text %>
+								</p>
+								<% if(currentUser&&comment.author.id.equals(currentUser._id)){ %>
+									<a class="btn btn-sm btn-warning" href="/experiences/<%= foundExperience._id %>/comments/<%= comment._id %>/edit">Edit</a>
+										<form action="/experiences/<%= foundExperience._id %>/comments/<%= comment._id %>?_method=DELETE" method="POST" style="display: inline; ">
+											<button class="btn btn-sm btn-danger">Delete</button>
+										</form>		
+								<% } %>						
+							</div>
+						</div>
+					<% }); %>
+				</div>
+
+			</div>
+		</div>
+	</div>
+</div>
+
+
+
+
+<% include ../partials/footer %>

@@ -1,0 +1,23 @@
+<% include ../partials/header %>
+<div class="container">
+    <header class="jumbotron">
+        <h1 style="font-family: 'ZCOOL KuaiLe', cursive;">记录我们每一次旅行的点点滴滴</h1> 
+        <a href="/experiences/new" class="btn btn-outline-dark" >Sharing a new trip!</a>
+    </header>
+    <div class="row">
+	    <% all_trip_experiences.forEach(function(trip_experience){ %>
+	    	<div class="col-md-3 col-sm-6">
+	    		<div class="img-thumbnail text-center">
+	    			<a href="/experiences/<%= trip_experience._id %>"><img style="width:100%" src="<%= trip_experience.image %>"></a>
+	    			<div class="caption">
+	    				<h4 style="font-family: 'ZCOOL KuaiLe', cursive;"><%= trip_experience.experience_title %></h4>
+	    			</div> 
+	    			<a class="btn btn-outline-info" href="/experiences/<%= trip_experience._id %>">More Info</a>
+	    			
+	    		</div>
+	    	</div>
+	    <% }); %>
+    </div>
+
+</div>
+<% include ../partials/footer %>

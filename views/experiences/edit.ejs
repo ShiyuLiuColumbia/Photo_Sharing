@@ -1,0 +1,24 @@
+<% include ../partials/header %>
+
+<div class="container"  >
+	<header style="text-align: center;">
+	    <h2>Edit <%= foundExperience.experience_title %></h2>
+	</header>
+	<!-- USE METHOD_OVERRIDE TO GENERATE PUT ROUTE -->
+	<form style="width:30%; margin: 0 auto;" action="/experiences/<%= foundExperience._id %>?_method=PUT" method="post">
+	    <div class="form-group">
+	        <input type="text" class="form-control" placeholder="Title" name="experience[experience_title]" value="<%= foundExperience.experience_title %>">
+	    </div>
+	    <div class="form-group">
+	        <input type="text" class="form-control" placeholder="Image" name="experience[image]" value="<%= foundExperience.image %>">
+	    </div>
+	    <div class="form-group">
+	    	<textarea rows="10" class="form-control" placeholder="Content" name="experience[description]"><%= foundExperience.description %></textarea>    
+	    </div>
+
+	    <button type="submit" class="btn btn-primary form-control">Submit</button>
+	    <a href="/experiences/<%= foundExperience._id %>">go back</a>
+	</form>       
+</div>
+
+<% include ../partials/footer %>
