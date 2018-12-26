@@ -4,7 +4,8 @@
   "description": "A trip experience sharing website using nodeJS as backend, Bootstrap and JQuery as frontend and MongoDB as database.",
   "main": "app.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node app.js"
   },
   "author": "Shiyu Liu in Columbia University",
   "license": "ISC",
