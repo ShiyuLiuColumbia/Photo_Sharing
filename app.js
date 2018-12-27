@@ -125,16 +125,18 @@ app.get('/experiences', function(req, res){
 app.post('/experiences', isLoggedIn, upload.single('image'), function(req, res){
     console.log(req.file.path);
     cloudinary.uploader.upload(req.file.path, function(result) {
-        //get data from form and use body-parser here to parse the body of the request
+        // get data from form and use body-parser here to parse the body of the request
         var experience_title = req.body.experience_title;
+        console.log(result)
         var image = result.secure_url;
         var description = req.body.description;
-        console.log(image)
+       
         var author = {
             id: req.user._id,
             username: req.user.username
-        }
-        var new_experience = {experience_title: experience_title, image: image, description: description, author: author};
+        };
+        var date = req.body.tripDate;
+        var new_experience = {experience_title: experience_title, image: image, description: description, author: author, date: date};
 
         Experience.create(new_experience, function(err, newly_create_experience){
             if(err){
@@ -178,51 +180,61 @@ app.get('/experiences/:id/edit', checkExperienceOwnership, function(req, res){
 });
 //UPDATE
 app.put('/experiences/:id', checkExperienceOwnership, upload.single('image'), function(req, res){
-    //find and update the experience
-    // findByIdAndUpdate(ID, UPDATEINFO, CALLBACK)
-    Experience.findByIdAndUpdate(req.params.id, req.body.experience, function(err, updatedExperience){
-        if(err){
-            console.log(err)
-        } else {
-            res.redirect('/experiences/'+req.params.id);
-        }
+
+    Experience.findById(req.params.id, function(err, foundExperience){
+        var image_url = foundExperience.image;
+        var image_public_id = image_url.substring(image_url.lastIndexOf("/") + 1, image_url.lastIndexOf("."));
+        // console.log(image_url, image_public_id);
+        cloudinary.uploader.destroy(image_public_id, function(result){
+            console.log(result);
+        });
+        cloudinary.uploader.upload(req.file.path, function(result) {
+            //get data from form and use body-parser here to parse the body of the request
+
+            
+            var image = result.secure_url;
+
+            var author = {
+                id: req.user._id,
+                username: req.user.username
+            }
+            req.body.experience.author = author;
+            req.body.experience.image = image;
+
+            // find and update the experience
+            // findByIdAndUpdate(ID, UPDATEINFO, CALLBACK)
+            Experience.findByIdAndUpdate(req.params.id, req.body.experience, function(err, updatedExperience){
+                if(err){
+                    console.log(err)
+                } else {
+                    res.redirect('/experiences/'+req.params.id);
+                }
+            });
+        });
+
     });
 
-    // cloudinary.uploader.upload(req.file.path, function(result) {
-    //     //get data from form and use body-parser here to parse the body of the request
-    //     var experience_title = req.body.experience_title;
-    //     var image = result.secure_url;
-    //     var description = req.body.description;
-    //     console.log(image)
-    //     var author = {
-    //         id: req.user._id,
-    //         username: req.user.username
-    //     }
-    //     var new_experience = {experience_title: experience_title, image: image, description: description, author: author};
 
-    //     Experience.create(new_experience, function(err, newly_create_experience){
-    //         if(err){
-    //             req.flash('error', err.message);
-    //             console.log(err);
-    //         }
-    //         else{
-    //             console.log('Successfully insert a new experience:');
-    //             console.log(newly_create_experience);
-    //             res.redirect('/experiences/'+newly_create_experience._id);
-    //         }
-    //     });
-    // });
 
 });
 
 //DESTROY
 app.delete('/experiences/:id', checkExperienceOwnership, function(req, res){
-    Experience.findByIdAndRemove(req.params.id, function(err){
-        if(err){
-            res.redirect('/experiences');
-        } else {
-            res.redirect('/experiences')
-        }
+    Experience.findById(req.params.id, function(err, foundExperience){
+        var image_url = foundExperience.image;
+        var image_public_id = image_url.substring(image_url.lastIndexOf("/") + 1, image_url.lastIndexOf("."));
+        // console.log(image_url, image_public_id);
+        cloudinary.uploader.destroy(image_public_id, function(result){
+            console.log(result);
+        });
+        Experience.findByIdAndRemove(req.params.id, function(err){
+            if(err){
+                res.redirect('/experiences');
+            } else {
+                res.redirect('/experiences')
+            }
+        });
+
     });
 });
 
@@ -259,6 +271,7 @@ app.post('/experiences/:id/comments', isLoggedIn, function(req, res){
                     // add username and id to comment
                     comment.author.id = req.user._id;
                     comment.author.username = req.user.username;
+                    comment.createTime = new Date().toLocaleString();
                     comment.save();
                     //connect new comment to experience
                      experience.comments.push(comment);
@@ -286,6 +299,7 @@ app.get('/experiences/:id/comments/:comment_id/edit',checkCommentOwnership, func
 
 //UPDATE
 app.put('/experiences/:id/comments/:comment_id',checkCommentOwnership , function(req, res){
+    req.body.comment.createTime = new Date().toLocaleString();
     Comment.findByIdAndUpdate(req.params.comment_id, req.body.comment, function(err, updatedComment){
         if(err){
             console.log(err);

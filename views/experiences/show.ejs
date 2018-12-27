@@ -14,7 +14,7 @@
 			<div class="img-thumbnail">
 				<img src="<%= foundExperience.image %>">
 				<div class="caption-full">
-					<h4 class="float-right">$100</h4>
+					<h4 class="float-right"><%= foundExperience.date %></h4>
 					<h4 style="font-family: 'ZCOOL KuaiLe', cursive;"><a href=""><%= foundExperience.experience_title %></a></h4>
 					<p style="font-family: 'ZCOOL KuaiLe', cursive;"><%= foundExperience.description  %></p>
 					<p><em>Submitted By <%= foundExperience.author.username %></em></p>
@@ -37,7 +37,7 @@
 						<div class="row">
 							<div class="col-md-12">
 								<strong><%= comment.author.username %> </strong>
-								<span class="float-right">10 days ago</span>
+								<span class="float-right"><%= comment.createTime %></span>
 								<p >
 									<%= comment.text %>
 								</p>
@@ -46,7 +46,8 @@
 										<form action="/experiences/<%= foundExperience._id %>/comments/<%= comment._id %>?_method=DELETE" method="POST" style="display: inline; ">
 											<button class="btn btn-sm btn-danger">Delete</button>
 										</form>		
-								<% } %>						
+								<% } %>	
+								<hr>					
 							</div>
 						</div>
 					<% }); %>

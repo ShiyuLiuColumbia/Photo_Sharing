@@ -1,28 +1,32 @@
 <% include ../partials/header %>
 
 <div class="container"  >
-	<header style="text-align: center;">
-	    <h2>Sharing a new trip!</h2>
-	</header>
-	<form style="width:30%; margin: 0 auto;" action="/experiences" method="post" enctype="multipart/form-data">
-	    <div class="form-group">
-	        <input type="text" class="form-control" placeholder="Title" name="experience_title">
-	    </div>
-<!-- 	    <div class="form-group">
-	        <input type="text" class="form-control" placeholder="Image" name="image">
-	    </div>
- -->	<div class="form-group">
-	    	<label for="img">Select Image:</label>
-	        <input id="img" type="file" accept="image/*" name="image" required>
-	    </div>
+    <header style="text-align: center;">
+        <h2>Sharing a new trip!</h2>
+    </header>
+    <form style="width:30%; margin: 0 auto;" action="/experiences" method="post" enctype="multipart/form-data">
+        <div class="form-group">
+            <input type="text" class="form-control" placeholder="Title" name="experience_title" required>
+        </div>
+<!--        <div class="form-group">
+            <input type="text" class="form-control" placeholder="Image" name="image">
+        </div> -->
+        <div class="form-group">
+            <label for="start">Date:</label>
+            <input type="date" id="start" name="tripDate" min="2012-01-01" max="2050-12-31" required>
+        </div>
+        <div class="form-group">
+            <label for="img">Select Image:</label>
+            <input id="img" type="file" accept="image/*" name="image" required>
+        </div>
 
-	    <div class="form-group">
-	    	<textarea rows="10" class="form-control" name="description" placeholder="Description"></textarea>    
-	    </div>
+        <div class="form-group">
+            <textarea rows="10" class="form-control" name="description" placeholder="Description"></textarea>    
+        </div>
 
-	    <button type="submit" class="btn btn-primary form-control">Submit</button>
-	    <a href="/experiences">go back</a>
-	</form>
+        <button type="submit" class="btn btn-primary form-control">Submit</button>
+        <a href="/experiences">go back</a>
+    </form>
 
 </div>
 <% include ../partials/footer %>

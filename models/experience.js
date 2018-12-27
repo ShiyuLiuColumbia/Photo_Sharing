@@ -5,6 +5,7 @@ var experienceSchema = new mongoose.Schema({
     experience_title: String,
     image: String,
     description: String,
+    date: String,
     //data association, associate comment with experience in one to many relationship. 
     //data association has two ways: 1.data embeded 2. data reference, we use 2 here
     //data reference will just store the object_id while data embedded will store all the data

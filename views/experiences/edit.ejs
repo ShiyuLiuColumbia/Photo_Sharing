@@ -5,12 +5,17 @@
 	    <h2>Edit <%= foundExperience.experience_title %></h2>
 	</header>
 	<!-- USE METHOD_OVERRIDE TO GENERATE PUT ROUTE -->
-	<form style="width:30%; margin: 0 auto;" action="/experiences/<%= foundExperience._id %>?_method=PUT" method="post">
+	<form style="width:30%; margin: 0 auto;" action="/experiences/<%= foundExperience._id %>?_method=PUT" method="post" enctype="multipart/form-data">
 	    <div class="form-group">
 	        <input type="text" class="form-control" placeholder="Title" name="experience[experience_title]" value="<%= foundExperience.experience_title %>">
 	    </div>
-	    <div class="form-group">
-	        <input type="text" class="form-control" placeholder="Image" name="experience[image]" value="<%= foundExperience.image %>">
+        <div class="form-group">
+            <label for="start">Date:</label>
+            <input type="date" id="start" name="tripDate" value="<%= foundExperience.date %>" min="2012-01-01" max="2050-12-31" required>
+        </div>
+		<div class="form-group">
+	    	<label for="img">Update Image:</label>
+	        <input id="img" type="file" accept="image/*" name="image" required>
 	    </div>
 	    <div class="form-group">
 	    	<textarea rows="10" class="form-control" placeholder="Content" name="experience[description]"><%= foundExperience.description %></textarea>    
