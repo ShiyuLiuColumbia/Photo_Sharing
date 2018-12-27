@@ -34,9 +34,9 @@ var upload = multer({ storage: storage, fileFilter: imageFilter})
 
 var cloudinary = require('cloudinary');
 cloudinary.config({ 
-  cloud_name: 'dxxjqwruo', 
-  api_key: '949724135286419', 
-  api_secret: 'OxSHfrpdoFBJx2tv4Qd07nr2kAw'
+  cloud_name: '###', 
+  api_key: '###', 
+  api_secret: '###'
 });
 // //since ./seeds export a function name, so seedDB here is. a fucntion name.
 // var seedDB = require('./seeds');
@@ -56,8 +56,8 @@ app.use(bodyParser.urlencoded({extended: true}));
 app.use(express.static(__dirname+'/public'));
 
 //connect to database 'trip_sharing'. When we use mongoose.connect(DATABASE_NAME) and mongoose will help us to create it if it does not exist now
-// mongoose.connect('mongodb://localhost/trip_sharing', { useNewUrlParser: true })
-mongoose.connect('mongodb://shiyu:liu1996227@ds223609.mlab.com:23609/trip_sharing', { useNewUrlParser: true })
+mongoose.connect('mongodb://localhost/trip_sharing', { useNewUrlParser: true })
+
 
 //express-session CONFIGURATION
 app.use(require('express-session')({
@@ -65,7 +65,7 @@ app.use(require('express-session')({
     resave: false,
     saveUninitialized: false
 }));
-//PASSWORD CONFIGURATION
+//PASSPORT CONFIGURATION
 app.use(passport.initialize());
 app.use(passport.session());
 //tell passport to use 'passport-local-mongoose' strategy. User.authenticate() is the function built in 'passport-local-mongoose'
