@@ -32,7 +32,8 @@ app.use(bodyParser.urlencoded({extended: true}));
 app.use(express.static(__dirname+'/public'));
 
 //connect to database 'trip_sharing'. When we use mongoose.connect(DATABASE_NAME) and mongoose will help us to create it if it does not exist now
-mongoose.connect('mongodb://localhost/trip_sharing', { useNewUrlParser: true })
+// mongoose.connect('mongodb://localhost/trip_sharing', { useNewUrlParser: true })
+mongoose.connect('mongodb://shiyu:liu1996227@ds223609.mlab.com:23609/trip_sharing', { useNewUrlParser: true })
 
 //express-session CONFIGURATION
 app.use(require('express-session')({
@@ -351,8 +352,11 @@ function checkCommentOwnership(req, res, next){
     }
 }
 
-app.listen(port, function(){
+// app.listen(port, function(){
+//     console.log('The trip-experience sharing server is running on port: '+port)
+// });
+
+app.listen(process.env.PORT, process.env.IP, function(){
     console.log('The trip-experience sharing server is running on port: '+port)
 });
-
 
