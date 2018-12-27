@@ -4,16 +4,16 @@
 	<header style="text-align: center;">
 	    <h2>Sharing a new trip!</h2>
 	</header>
-	<form style="width:30%; margin: 0 auto;" action="/experiences" method="post">
+	<form style="width:30%; margin: 0 auto;" action="/experiences" method="post" enctype="multipart/form-data">
 	    <div class="form-group">
 	        <input type="text" class="form-control" placeholder="Title" name="experience_title">
 	    </div>
-	    <div class="form-group">
+<!-- 	    <div class="form-group">
 	        <input type="text" class="form-control" placeholder="Image" name="image">
 	    </div>
-	    <div class="form-group">
+ -->	<div class="form-group">
 	    	<label for="img">Select Image:</label>
-	        <input id="img" type="file" accept=".jpg, .jpeg, .png">
+	        <input id="img" type="file" accept="image/*" name="image" required>
 	    </div>
 
 	    <div class="form-group">

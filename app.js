@@ -7,6 +7,8 @@ var LocalStrategy = require('passport-local');
 var methodOverride = require('method-override');
 var flash = require('connect-flash');
 
+
+
 var port = 8000;
 //set up the Experience model, it is defined in ./models/experience
 var Experience = require('./models/experience');
@@ -14,6 +16,28 @@ var Comment = require('./models/comment');
 var User = require('./models/user');
 
 
+//image upload
+var multer = require('multer');
+var storage = multer.diskStorage({
+  filename: function(req, file, callback) {
+    callback(null, Date.now() + file.originalname);
+  }
+});
+var imageFilter = function (req, file, cb) {
+    // accept image files only
+    if (!file.originalname.match(/\.(jpg|jpeg|png|gif)$/i)) {
+        return cb(new Error('Only image files are allowed!'), false);
+    }
+    cb(null, true);
+};
+var upload = multer({ storage: storage, fileFilter: imageFilter})
+
+var cloudinary = require('cloudinary');
+cloudinary.config({ 
+  cloud_name: 'dxxjqwruo', 
+  api_key: '949724135286419', 
+  api_secret: 'OxSHfrpdoFBJx2tv4Qd07nr2kAw'
+});
 // //since ./seeds export a function name, so seedDB here is. a fucntion name.
 // var seedDB = require('./seeds');
 // seedDB();
@@ -64,6 +88,9 @@ app.use(function(req, res, next){
 //tell express  we will use '_method' as route overrider
 app.use(methodOverride('_method'));
 
+
+
+
 /*******************************/
 
 
@@ -95,29 +122,32 @@ app.get('/experiences', function(req, res){
 });
 
 //CREATE - create a new trip
-app.post('/experiences', isLoggedIn, function(req, res){
-    //get data from form and use body-parser here to parse the body of the request
-    var experience_title = req.body.experience_title;
-    var image = req.body.image;
-    var description = req.body.description;
-    var author = {
-        id: req.user._id,
-        username: req.user.username
-    }
-
-    var new_experience = {experience_title: experience_title, image: image, description: description, author: author};
-
-    Experience.create(new_experience, function(err, newly_create_experience){
-        if(err){
-            console.log(err);
+app.post('/experiences', isLoggedIn, upload.single('image'), function(req, res){
+    console.log(req.file.path);
+    cloudinary.uploader.upload(req.file.path, function(result) {
+        //get data from form and use body-parser here to parse the body of the request
+        var experience_title = req.body.experience_title;
+        var image = result.secure_url;
+        var description = req.body.description;
+        console.log(image)
+        var author = {
+            id: req.user._id,
+            username: req.user.username
         }
-        else{
-            console.log('Successfully insert a new experience:');
-            console.log(newly_create_experience);
-            res.redirect('/experiences');
-        }
+        var new_experience = {experience_title: experience_title, image: image, description: description, author: author};
+
+        Experience.create(new_experience, function(err, newly_create_experience){
+            if(err){
+                req.flash('error', err.message);
+                console.log(err);
+            }
+            else{
+                console.log('Successfully insert a new experience:');
+                console.log(newly_create_experience);
+                res.redirect('/experiences/'+newly_create_experience._id);
+            }
+        });
     });
-
 });
 
 //NEW - show form to create new trip
@@ -147,7 +177,7 @@ app.get('/experiences/:id/edit', checkExperienceOwnership, function(req, res){
     });
 });
 //UPDATE
-app.put('/experiences/:id', checkExperienceOwnership, function(req, res){
+app.put('/experiences/:id', checkExperienceOwnership, upload.single('image'), function(req, res){
     //find and update the experience
     // findByIdAndUpdate(ID, UPDATEINFO, CALLBACK)
     Experience.findByIdAndUpdate(req.params.id, req.body.experience, function(err, updatedExperience){
@@ -157,6 +187,32 @@ app.put('/experiences/:id', checkExperienceOwnership, function(req, res){
             res.redirect('/experiences/'+req.params.id);
         }
     });
+
+    // cloudinary.uploader.upload(req.file.path, function(result) {
+    //     //get data from form and use body-parser here to parse the body of the request
+    //     var experience_title = req.body.experience_title;
+    //     var image = result.secure_url;
+    //     var description = req.body.description;
+    //     console.log(image)
+    //     var author = {
+    //         id: req.user._id,
+    //         username: req.user.username
+    //     }
+    //     var new_experience = {experience_title: experience_title, image: image, description: description, author: author};
+
+    //     Experience.create(new_experience, function(err, newly_create_experience){
+    //         if(err){
+    //             req.flash('error', err.message);
+    //             console.log(err);
+    //         }
+    //         else{
+    //             console.log('Successfully insert a new experience:');
+    //             console.log(newly_create_experience);
+    //             res.redirect('/experiences/'+newly_create_experience._id);
+    //         }
+    //     });
+    // });
+
 });
 
 //DESTROY
