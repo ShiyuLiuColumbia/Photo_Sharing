@@ -6,7 +6,7 @@
 
 ## 2. Packages
 Use `$npm install <package-name> --save` to install packages listed blow.
-- [Express] - Web framework on node.js
+- [Express](https://github.com/expressjs/express) - Web framework on node.js
 - [ejs](https://github.com/mde/ejs) - Embedded JavaScript templates 
 - [Mongoose](https://mongoosejs.com/) - ODM used in node.js to manipulate MongoDB
 - [express-session](https://github.com/expressjs/session) Simple session middleware for Express
